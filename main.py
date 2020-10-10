@@ -2,12 +2,19 @@ import random
 from fractions import Fraction
 import prettytable as pt
 
+#把假分数转化为真分数
 def while_1(f):
     f_1=0
     while f>=1:
         f-=1
         f_1+=1
-    return str(f_1)+'\''+str(f)
+    # print(f)
+    if f_1 == 0:
+        return str(f)
+    else:
+        return str(f_1)+'\''+str(f)
+
+#将中缀表达式转化为后缀表达式
 def generate_postfix(list_1):
        # print('算式',infix)
         op_rank = {'×': 2, '÷': 2, '＋': 1, '－': 1}  # 定义加减乘除的优先级
@@ -26,7 +33,7 @@ def generate_postfix(list_1):
             post_list.append(stack.pop())
         
         return post_list
-
+#计算后缀表示式
 def calculate_postfix(list_1):
         """
         calculate postfix expression
@@ -59,8 +66,7 @@ def calculate_postfix(list_1):
        # print('stack:',stack,'\n','p:',p)
         return stack.pop()
 
-
-
+#两个操作数
 def newint(tb):
    
     opr = ['＋', '－', '×', '÷']
@@ -83,9 +89,11 @@ def newint(tb):
             n1, n2 = max(n1, n2), min(n1, n2)
         rjg[1] = int(n1 / n2)
     #print(n1, opr[fh], n2, '= ', end='')
-    tb.add_row([n0,str(n1)+'\''+str(0),opr[fh]+'\t',str(n2)+'\''+str(0),'*'+'\t','*','='])
+    #print(str(0),opr[fh],str(0),'=')
+    tb.add_row([n0,str(n1),opr[fh],str(n2),'','','='])
     return rjg
     
+#两个带分数
 def newfra(tb):
      
    
@@ -113,6 +121,7 @@ def newfra(tb):
     elif fh == 1:
         n1, n2 = max(n1, n2), min(n1, n2)
         rjg[0]=n1 - n2
+        print(rjg[0])
         while rjg[0]>=1:
             rjg[0]-=1
             rjg[1]=rjg[1]+1
@@ -134,10 +143,10 @@ def newfra(tb):
             n2-=1
             n2_1=n2_1+1
 
-    tb.add_row([n0,str(n1_1)+'\''+str(n1),opr[fh]+'\t',str(n2_1)+'\''+str(n2),'*'+'\t','*','='])
+    tb.add_row([n0,str(n1_1)+'\''+str(n1),opr[fh],str(n2_1)+'\''+str(n2),'','','='])
     #print('\t',n1_1,'\'',n1,'\t',opr[fh],'\t', n2_1,'\'',n2,'\t','= ', end='')
     return rjg
-    
+#三个整数的
 def new_int():
     a_1=random.randint(1, 9)
     a_2=random.randint(1, 9)
@@ -164,13 +173,15 @@ def new_int():
 
     f=[0,0]
     f[0]=generate_postfix(str(a_1)+str(opr_1)+str(a_2)+str(opr_2)+str(a_3))
-    tb.add_row([n0,str(a_1),str(opr_1)+'\t',str(a_2),str(opr_2)+'\t',str(a_3),'=',])
+    tb.add_row([n0,str(a_1),str(opr_1),str(a_2),str(opr_2),str(a_3),'=',])
     #print("算式",str(a_1)+str(opr_1)+str(a_2)+str(opr_2)+str(a_3))
     #print(f[0])
     f[0]=calculate_postfix(f[0])
     #print(f)
     #print(f)
     return f
+
+#三个带分数的
 def new_fra():
     a_1=random.randint(1, 9)
     a_2=random.randint(1, 9)
@@ -198,7 +209,7 @@ def new_fra():
     elif x_2==3:
         opr_2='÷'
     #*******************************************************************************************
-    tb.add_row([n0,while_1(Fraction(a_1, a_4)),str(opr_1)+'\t',str(Fraction(a_2, a_5)),str(opr_2)+'\t',str(Fraction(a_3, a_6)),'='])
+    tb.add_row([n0,while_1(Fraction(a_1, a_4)),str(opr_1),while_1(Fraction(a_2, a_5)),str(opr_2),while_1(Fraction(a_3, a_6)),'='])
     
     list_1=[Fraction(a_1, a_4),str(opr_1),Fraction(a_2, a_5),(opr_2),Fraction(a_3, a_6)]
     f=generate_postfix(list_1)
@@ -212,7 +223,8 @@ def new_fra():
    #print(f_1)
     return f_1
 
-    
+
+#输出的
 def newtest():
     opr = ['＋', '－', '×', '÷']
     print('输入题库所需要的题目数量')
@@ -224,15 +236,15 @@ def newtest():
     global n0
     n0=1
     while m<=(n-1):
-        fh=random.randint(0, 3)
-        #fh=3
+        #fh=random.randint(0, 3)
+        fh=3
         #print(m+1,end='、')
         if fh==0:
             rjg_1=newfra(tb)
         
             n0=n0+1
             rjg.append(rjg_1[0])
-            rjg_2.append(0)
+            rjg_2.append(rjg_1[1])
             #print(' ')
             m=m+1
         elif fh==1:
@@ -245,15 +257,28 @@ def newtest():
             m=m+1
         elif fh==2:
             rjg_1=new_int()
+            #print(rjg_1[0])
+            #if rjg_1[0] < 0:
+                #rjg_1=new_int()
+            while rjg_1[0] < 0:
+                rjg_1=new_int()
             n0=n0+1
+            while rjg_1[0]>=1:
+               rjg_1[0]-=1
+               rjg_1[1]=rjg_1[1]+1
+            #print(rjg_1[1])
             rjg.append(rjg_1[0])
             rjg_2.append(rjg_1[1])
             m=m+1
         elif fh==3:
             rjg_1=new_fra()
+            while rjg_1[0] < 0:
+                rjg_1=new_fra()
             n0=n0+1
+            while rjg_1[0]>=1:
+               rjg_1[0]-=1
+               rjg_1[1]=rjg_1[1]+1
             rjg.append(rjg_1[0])
-            
             rjg_2.append(rjg_1[1])
             m=m+1
             #print(rjg,'\n',rjg_2)
@@ -273,6 +298,8 @@ tb = pt.PrettyTable()
 tb.field_names = ["题号","操作数1","运算符1", "操作数2","运算符2","操作数3","  "]
 tb0 = pt.PrettyTable()
 tb0.field_names = ["题号","答案"]
+
+
 def main():
     
     newtest()
