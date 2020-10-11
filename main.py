@@ -1,9 +1,22 @@
 import random
 from fractions import Fraction
 import prettytable as pt
+import tkinter
+import pygeoip
+import tkinter.messagebox
+
+
+# 完成布局
+def gui_arrang():
+    ip_input.pack()
+    display_info.pack()
+    result_button.pack()
+    
+
 
 #把假分数转化为真分数,传进来的是一个分数
 def while_1(f):
+    
     rjg = [0,0]
     rjg[0] = f
     #考虑f为零的情况
@@ -102,7 +115,7 @@ def newint(tb):
         rjg = while_1(rjg)
     #print(n1, opr[fh], n2, '= ', end='')
     #print(str(0),opr[fh],str(0),'=')
-    tb.add_row([n0,n1,opr[fh],n2,'','','='])
+    tb.add_row([n0,n1,opr[fh],n2,' ',' ','='])
     return rjg
     
 #两个带分数
@@ -160,7 +173,7 @@ def newfra(tb):
             #n2_1=n2_1+1
     
     #tb.add_row([n0,str(n1_1)+'\''+str(n1),opr[fh],str(n2_1)+'\''+str(n2),'','','='])
-    tb.add_row([n0,while_1(n1),opr[fh],while_1(n2),'','','='])
+    tb.add_row([n0,while_1(n1),opr[fh],while_1(n2),' ',' ','='])
     #print('\t',n1_1,'\'',n1,'\t',opr[fh],'\t', n2_1,'\'',n2,'\t','= ', end='')
     #return rjg
     return while_1(rjg)
@@ -248,7 +261,9 @@ def new_fra():
 def newtest():
     opr = ['＋', '－', '×', '÷']
     print('输入题库所需要的题目数量')
-    n=int(input())
+    global n
+    n=0
+    n=int(ip_input.get())
     rjg=[]
     rjg_1=[0]
     rjg_2=[]
@@ -326,7 +341,8 @@ def newtest():
 
 
 
-def main():
+
+def main_1():
     #定义全局变量
     global tb, tb0
     tb = pt.PrettyTable()
@@ -334,29 +350,91 @@ def main():
     tb0 = pt.PrettyTable()
     tb0.field_names = ["题号","答案"]
     newtest()
+    # 为回显列表赋值
+    #*****************************************************************************************************
+    a__2=0
+    for item in str(tb0).split('\n'):
+            
+            display_info.insert(a__2,item)
+            a__2=a__2+1
+    a__2=0
+    for item in str(tb).split('\n'):
+            display_info.insert(a__2,item)
+            a__2=a__2+1
+    #display_info.insert(0,"")=str(tb)
     #print(type(tb))
-    print("是否覆盖原文件yes/no")
-    s=input()
-    if s=="yes":
-        txt1 = open("C:/Users/Administrator.USER-20190905VU/Desktop/题目.txt", "w")
+    #print("是否覆盖原文件yes/no")
+    okqqq()
+    #s=input()
+    if result:
+        txt1 = open("C:/Users/陈乙鑫/Desktop/题目.txt", "w")
         txt1.write( str(tb)+'\n'+'**************************************************************************************************'+'\n' )
         txt1.close()
-        txt2 = open("C:/Users/Administrator.USER-20190905VU/Desktop/答案.txt", "w")
+        txt2 = open("C:/Users/陈乙鑫/Desktop/答案.txt", "w")
         txt2.write( str(tb0)+'\n'+'**************************************************************************************************'+'\n' )
         txt2.close()
     else:
-        txt1 = open("C:/Users/Administrator.USER-20190905VU/Desktop/题目.txt", "a")
+        txt1 = open("C:/Users/陈乙鑫/Desktop/题目.txt", "a")
         txt1.write( str(tb)+'\n'+'**************************************************************************************************'+'\n' )
         txt1.close()
-        txt2 = open("C:/Users/Administrator.USER-20190905VU/Desktop/答案.txt", "a")
+        txt2 = open("C:/Users/陈乙鑫/Desktop/答案.txt", "a")
         txt2.write( str(tb0)+'\n'+'**************************************************************************************************'+'\n' )
         txt2.close()
-    print('是否继续做题yes/no')
+    #print('是否继续做题yes/no')
+    okqqq_2()
     y=input()
-    if y=='yes':
+    if y==result:
         
-        main()
+        main_1()
+    
+
+#main()
+
+
+#**************************************************************************************
+#**************************************************************************************
+#**************************************************************************************
+
+
+
+
+def main():
+
+    gui_arrang()
+    tkinter.mainloop()
+    pass
+root = tkinter.Tk()
+        # 给主窗口设置标题内容
+root.title("四则运算")
+        # 创建一个输入框,并设置尺寸
+ip_input =tkinter.Entry(root,width=10)
+
+        # 创建一个回显列表
+display_info = tkinter.Listbox(root,width=100,height=20)
+
+        # 创建一个查询结果的按钮
+result_button = tkinter.Button(root, command = main_1, text = "生成")
+
+def okqqq():
+    # 弹出对话框
+    global result
+    result = tkinter.messagebox.askokcancel(title = '标题~',message='是否覆盖原文件')
+    # 返回值为True或者False
+def okqqq_2():
+    # 弹出对话框
+    global result
+    result = tkinter.messagebox.askokcancel(title = '标题~',message='是否继续做题')
+    # 返回值为True或者False
+    
 
 main()
+
+
+    
+
+
+
+
+
 
 
