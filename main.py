@@ -162,9 +162,9 @@ def create_Int():
         opr_2 = '×'
     elif x_2 == 3:
         opr_2 = '÷'
-    f[0] = generate_postfix(
-        str(a_1) + str(opr_1) + str(a_2) + str(opr_2) + str(a_3))
-    f[0] = calculate_postfix(f[0])
+    list_1=[str(a_1),str(opr_1),str(a_2),(opr_2),str(a_3)]
+    f = generate_postfix(list_1)
+    f[0]=calculate_postfix(f)
     #如果是负数就不把它打印出来
     if f[0] >= 0:
         tb.add_row([
