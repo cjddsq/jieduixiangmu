@@ -324,13 +324,6 @@ def main_1():
             '**************************************************************************************************'
             + '\n')
         txt2.close()
-    #print('是否继续做题yes/no')
-    okqqq_2()
-    y = input()
-    if y == result:
-
-        main_1()
-
 
 
 
@@ -357,12 +350,6 @@ def okqqq():
     result = tkinter.messagebox.askokcancel(title='标题~', message='是否覆盖原文件')
 
 
-    # 返回值为True或者False
-def okqqq_2():
-    # 弹出对话框
-    global result
-    result = tkinter.messagebox.askokcancel(title='标题~', message='是否继续做题')
-    # 返回值为True或者False
 
 
 
